@@ -1,0 +1,20 @@
+<div class="container">
+  <a class="navbar-brand" routerLink="/">Cinema X</a>
+
+  <div class="navbar-nav" *ngIf="auth$ | async">
+    <a class="nav-link" routerLink="/bucket">Orders <i class="bi bi-bucket"></i></a>
+  </div>
+
+  <div class="ms-auto">
+    <ng-container *ngIf="auth$ | async; else loggedOff">
+      <button (click)="auth.logout()" class="btn btn-outline-danger">
+        Log out
+      </button>
+    </ng-container>
+    <ng-template #loggedOff>
+      <button class="btn btn-outline-secondary" routerLink="/login">
+        Login
+      </button>
+    </ng-template>
+  </div>
+</div>

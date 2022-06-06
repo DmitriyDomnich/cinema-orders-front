@@ -1,0 +1,33 @@
+<form #loginForm="ngForm" (input)="loginError = false" (ngSubmit)="onSubmit()" class="shadow bg-light m-5 p-3 rounded">
+  <div class="mb-3">
+    <label for="email" class="form-label">Email address</label>
+    <input [class.is-invalid]="emailInput.invalid && emailInput.touched" placeholder="test@hotmail.com" name="email"
+      [(ngModel)]="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required type="email" class="form-control"
+      id="email" aria-describedby="emailHelp" #emailInput="ngModel">
+    <div *ngIf="emailInput.untouched || emailInput.valid; else emailErr" id="emailHelp" class="form-text">We'll never
+      share your email with anyone else.</div>
+    <ng-template #emailErr>
+      <div class="invalid-feedback">
+        Email invalid
+      </div>
+    </ng-template>
+  </div>
+  <div class="mb-3">
+    <label for="password" class="form-label">Password</label>
+    <input [class.is-invalid]="passInput.invalid && passInput.touched" name="password" [(ngModel)]="password"
+      placeholder="5-12 symbols" minlength="5" maxlength="12" required type="password" class="form-control"
+      id="password" #passInput="ngModel">
+    <div [style.visibility]="passInput.invalid && passInput.touched ? 'visible' : 'hidden'" class="invalid-feedback">
+      Password format isn't valid.
+    </div>
+  </div>
+  <div class="d-flex justify-content-between align-items-center">
+    <div>
+      <button [disabled]="loginForm.invalid" type="submit" class="btn btn-primary">Submit</button>
+      <div class="text-danger ms-3 d-inline-block" *ngIf="loginError">
+        Credentials are not correct.
+      </div>
+    </div>
+    <a routerLink="/register" class="link-primary">Sign up</a>
+  </div>
+</form>
