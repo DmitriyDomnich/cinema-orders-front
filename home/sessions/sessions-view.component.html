@@ -1,0 +1,53 @@
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+  <div
+    [routerLink]="['s', session.id]"
+    class="col"
+    *ngFor="let session of sessions; let i = index"
+  >
+    <div
+      [attr.id]="i === 0 ? 'p' : undefined"
+      itemCard
+      class="card border-dark h-100"
+    >
+      <img [src]="session.movie.coverUrl" class="card-img-top" alt="..." />
+      <div class="card-body">
+        <h3 class="card-title">{{ session.movie.name }}</h3>
+        <p class="card-text">Genres: {{ session.movie.genres | join: ", " }}</p>
+        <p class="card-text">
+          Director{{ session.movie.directors!.length > 1 ? "s" : "" }}:
+          {{ session.movie.directors! | join: ", " }}
+        </p>
+        <p class="card-text">Duration: {{ session.movie.duration }} min</p>
+        <p class="card-text">Country: {{ session.movie.country }}</p>
+      </div>
+      <div class="card-footer">
+        <span class="text-underline text-primary">
+          Date: {{ session.date | date }}
+        </span>
+        ·
+        <span
+          [class]="{
+            'text-danger': session.movie.ageRestriction > 17,
+            'text-warning':
+              session.movie.ageRestriction < 18 &&
+              session.movie.ageRestriction > 5,
+            'text-info': session.movie.ageRestriction < 6
+          }"
+        >
+          {{ session.movie.ageRestriction }}+
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<pagination
+  class="my-4 justify-content-center"
+  previousText="&lsaquo;"
+  nextText="&rsaquo;"
+  [maxSize]="3"
+  (pageChanged)="
+    router.navigate([''], { queryParams: { offset: $event.page } })
+  "
+  [itemsPerPage]="2"
+  [totalItems]="sessionCount || 0"
+></pagination>

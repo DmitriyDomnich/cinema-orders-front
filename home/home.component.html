@@ -1,1 +1,31 @@
-<p>home works!</p>
+<carousel
+  [isAnimated]="true"
+  data-hovered="false"
+  (mouseenter)="$any($event.currentTarget).dataset.hovered = 'true'"
+  (mouseleave)="$any($event.currentTarget).dataset.hovered = 'false'"
+>
+  <slide
+    [routerLink]="['/s', session.id]"
+    *ngFor="
+      let session of carouselSessions$ | async | slice: 0:5;
+      let i = index
+    "
+  >
+    <img [src]="session.movie.coverUrl" [alt]="i" />
+    <div class="carousel-caption bg-dark">
+      <h1>
+        {{ session.movie.name }}
+      </h1>
+      <p>
+        <ng-container *ngFor="let genre of session.movie.genres; let i = index">
+          <span class="genre">{{ genre.name }}</span>
+          <span *ngIf="i !== session.movie.genres.length - 1"> · </span>
+        </ng-container>
+      </p>
+    </div>
+  </slide>
+</carousel>
+<sessions-view
+  [sessionCount]="sessionsCount$ | async"
+  [sessions]="sessions$ | async"
+></sessions-view>
