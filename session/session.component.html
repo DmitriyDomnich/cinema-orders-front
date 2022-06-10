@@ -1,1 +1,56 @@
-<p>session works!</p>
+<div class="container my-3" *ngIf="session$ | async as session">
+  <div class="row">
+    <img
+      class="img-thumbnail col-11 mx-auto col-sm-10 d-block col-md-6 col-lg-4 border-2 p-2"
+      style="max-height: 550px"
+      [src]="session.movie.portraitUrl"
+    />
+    <div class="p-3 col-md-6 col-lg-8 d-flex fs-3 flex-column text-justify">
+      <h1 class="display-3 text-info">
+        {{ session.movie.name }}
+      </h1>
+      <div>
+        <span class="text-muted">Жанр: </span
+        >{{ session.movie.genres | join: ", " }}
+      </div>
+      <div>
+        <span class="text-muted">Режисери: </span
+        >{{ session.movie.directors! | join: ", " }}
+      </div>
+      <div *ngIf="session.movie.actors?.length">
+        <span class="text-muted">В головних ролях: </span
+        >{{ session.movie.actors! | join: ", " }}
+      </div>
+      <div>
+        <span class="text-muted">Тривалість: </span
+        >{{ session.movie.duration }} хвилин
+      </div>
+      <div>
+        <span class="text-muted">Країна: </span>{{ session.movie.country }}
+      </div>
+      <div [age]="session.movie.ageRestriction">
+        <span class="text-muted">Вік: </span>{{ session.movie.ageRestriction }}+
+      </div>
+      <div>
+        <span class="date">Дата та час проведення: </span
+        >{{ session.date | date: "short" }}
+      </div>
+    </div>
+  </div>
+  <div class="row my-3">
+    <h1 class="text-warning ms-3 fst-italic">Про фільм</h1>
+    <div class="fs-4" style="text-align: justify; text-indent: 1rem">
+      {{ session.movie.about }}
+    </div>
+  </div>
+  <div class="row my-3">
+    <div class="col-10 col-md-4 mx-auto mx-md-0">
+      {{ room | json }}
+    </div>
+    <hall
+      [seats]="seats$ | async"
+      class="col-12 col-md-8 rounded-2 border-1 mx-auto"
+    >
+    </hall>
+  </div>
+</div>

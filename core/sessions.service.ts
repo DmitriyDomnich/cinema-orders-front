@@ -25,6 +25,33 @@ interface CurrentSession {
 export class SessionsService {
   constructor(private http: HttpClient) {}
 
+  getSessionById(id: string): Observable<ISession> {
+    return this.http
+      .get<any>(`${environment.api_url}/session`, {
+        params: {
+          id,
+        },
+      })
+      .pipe(
+        map((data) => ({
+          id: data.id,
+          date: data.date,
+          movie: {
+            ...data,
+            id: data.m_id,
+            actors: data.actors.map((actor: any) => ({
+              id: actor.name,
+              name: `${actor.name} ${actor.surname}`,
+            })),
+            directors: data.directors.map((director: any) => ({
+              id: director.name,
+              name: `${director.name} ${director.surname}`,
+            })),
+          },
+        }))
+      );
+  }
+
   getSessionsCount(): Observable<number> {
     return this.http
       .get<{ length: number }[]>(`${environment.api_url}/sessions-count`)

@@ -22,18 +22,10 @@
       </div>
       <div class="card-footer">
         <span class="text-underline text-primary">
-          Date: {{ session.date | date }}
+          Date: {{ session.date | date: "short" }}
         </span>
         ·
-        <span
-          [class]="{
-            'text-danger': session.movie.ageRestriction > 17,
-            'text-warning':
-              session.movie.ageRestriction < 18 &&
-              session.movie.ageRestriction > 5,
-            'text-info': session.movie.ageRestriction < 6
-          }"
-        >
+        <span [age]="session.movie.ageRestriction">
           {{ session.movie.ageRestriction }}+
         </span>
       </div>
