@@ -1,12 +1,25 @@
 <div class="container">
   <a class="navbar-brand" routerLink="/">Cinema X</a>
 
-  <div class="navbar-nav" *ngIf="auth$ | async">
-    <a class="nav-link" routerLink="/bucket">Orders <i class="bi bi-bucket"></i></a>
+  <div class="navbar-nav" *ngIf="(auth$ | async) === 'client'">
+    <a class="nav-link" routerLink="/bucket"
+      >Orders <i class="bi bi-bucket"></i
+    ></a>
   </div>
 
-  <div class="ms-auto">
-    <ng-container *ngIf="auth$ | async; else loggedOff">
+  <progressbar
+    [hidden]="loading$ | async"
+    class="position-absolute w-100 start-0 bottom-0"
+    type="danger"
+    [style.height.rem]="0.5"
+    [animate]="true"
+    [striped]="true"
+    [value]="100"
+  ></progressbar>
+
+  <div class="ms-auto d-flex">
+    <search class="me-2"></search>
+    <ng-container *ngIf="(auth$ | async) !== 'none'; else loggedOff">
       <button (click)="auth.logout()" class="btn btn-outline-danger">
         Log out
       </button>

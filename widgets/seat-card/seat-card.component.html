@@ -1,0 +1,20 @@
+<div class="d-flex text-center">
+  <span class="me-2 fw-bold fs-4 border-right border-1">
+    {{ seat.seat.split(":")[0] }}
+    <br />
+    <span class="fs-6 fw-normal">ряд</span>
+  </span>
+  <span class="fs-4 fw-bold">
+    {{ seat.seat.split(":")[1] }}
+    <br />
+    <span class="fs-6 fw-normal">місце</span>
+  </span>
+  <div class="ms-4 d-flex flex-column fs-4 text-start">
+    <ng-content select="movie-info"></ng-content>
+    <ng-content select="session-info"></ng-content>
+  </div>
+</div>
+<div class="text-success d-flex align-items-center">
+  <span class="fs-4">{{ seat.price }} грн</span>
+  <ng-content select="card-status"></ng-content>
+</div>

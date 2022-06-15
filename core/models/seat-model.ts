@@ -1,5 +1,6 @@
 export interface ISeat {
-  id: string;
+  id: number;
   seat: string;
   isAvailable: boolean;
+  price: number;
 }

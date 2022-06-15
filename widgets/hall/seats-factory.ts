@@ -5,21 +5,14 @@ import { EmptySeatComponent } from "./empty-seat/empty-seat.component";
 import { FreeSeatComponent } from "./free-seat/free-seat.component";
 
 export class SeatsFactory {
-  private hallConfig: [number, number];
-
   constructor(
     private viewContainerRef: ViewContainerRef,
-    private seats: ISeat[]
-  ) {
-    const [rowCount, columnCount] = this.getSeatConfigurationByIndex(
-      seats.length - 1
-    )!;
-
-    this.hallConfig = [rowCount, columnCount];
-  }
+    private seats: ISeat[],
+    private counts: [number, number]
+  ) {}
 
   create() {
-    const [rowCount, columnCount] = this.hallConfig;
+    const [rowCount, columnCount] = this.counts;
     let currSeatIndex = 0;
 
     for (let i = 1; i <= rowCount; i++) {
@@ -28,7 +21,9 @@ export class SeatsFactory {
 
         if (seat && i === seat[0] && j === seat[1]) {
           if (this.seats[currSeatIndex++].isAvailable) {
-            this.viewContainerRef.createComponent(FreeSeatComponent);
+            const seatRef =
+              this.viewContainerRef.createComponent(FreeSeatComponent);
+            seatRef.instance.seat = this.seats[currSeatIndex - 1];
           } else {
             this.viewContainerRef.createComponent(BusySeatComponent);
           }

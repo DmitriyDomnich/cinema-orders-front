@@ -1,0 +1,37 @@
+<ng-container *ngIf="seatsBooked$ | async as seatsBooked">
+  <ng-container *ngIf="seatsBooked.length; else noItems">
+    <div id="cards-container" class="d-flex w-100 flex-column p-2">
+      <seat-card
+        [seat]="seat"
+        *ngFor="let seat of seatsBooked; trackBy: trackBy"
+      >
+      </seat-card>
+    </div>
+    <button
+      triggers=""
+      (click)="addToBucket()"
+      [popover]="popover"
+      [outsideClick]="true"
+      popoverTitle="Вам потрібно авторизуватися для бронювання білетів"
+      #buyPopover="bs-popover"
+      id="buy"
+      class="btn btn-lg d-flex justify-content-between w-100 mx-auto rounded-pill btn-primary"
+    >
+      <span>Додати до корзини</span>
+      <span>{{ seatsBooked | fullPrice }} гривень</span>
+    </button>
+  </ng-container>
+  <ng-template #noItems>
+    <div class="fs-3 text-center fw-bold">Оберіть місця</div>
+  </ng-template>
+</ng-container>
+<ng-template #popover>
+  <button
+    (click)="addToCache()"
+    routerLink="/login"
+    [queryParams]="{ id: route.snapshot.params['id'] }"
+    class="btn btn-outline-primary d-block mx-auto"
+  >
+    Авторизуватися
+  </button>
+</ng-template>

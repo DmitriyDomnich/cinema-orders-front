@@ -1,0 +1,59 @@
+<div class="d-inline-block fw-bold me-2">Жанри:</div>
+<div
+  class="form-check form-check-inline"
+  *ngFor="let genre of genres$ | async; let i = index"
+>
+  <input
+    [checked]="checkGenre(i + 1) | async"
+    (change)="toggleGenre($any($event.target).value)"
+    class="form-check-input"
+    type="checkbox"
+    [id]="i"
+    [value]="genre.id"
+  />
+  <label class="form-check-label" [for]="i"> {{ genre.name }} </label>
+</div>
+<br />
+<div class="d-inline-block fw-bold me-2">Дата:</div>
+<div class="form-check form-check-inline">
+  <input
+    (change)="selectedDate = null"
+    [checked]="!(week.checked || month.checked)"
+    class="form-check-input"
+    type="radio"
+    name="date"
+    id="allTime"
+    value="allTime"
+  />
+  <label class="form-check-label" for="allTime"> Найближчі </label>
+</div>
+<div class="form-check form-check-inline">
+  <input
+    #week
+    (change)="selectedDate = countUntilNextWeekTime()"
+    [checked]="selectedDate === countUntilNextWeekTime()"
+    class="form-check-input"
+    type="radio"
+    name="date"
+    id="week"
+    value="allTime"
+  />
+  <label class="form-check-label" for="week"> Цього тижня </label>
+</div>
+<div class="form-check form-check-inline">
+  <input
+    #month
+    (change)="selectedDate = countUntilNextMonthTime()"
+    [checked]="selectedDate === countUntilNextMonthTime()"
+    class="form-check-input"
+    type="radio"
+    name="date"
+    id="month"
+    value="allTime"
+  />
+  <label class="form-check-label" for="month"> Цього місяця </label>
+</div>
+
+<button (click)="navigate()" class="btn d-block ms-auto btn-primary">
+  Filter
+</button>

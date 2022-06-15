@@ -1,15 +1,7 @@
 carousel {
   cursor: pointer;
 }
-:host {
-  &>* {
-    &::after {
-      display: block;
-      content: "";
-      margin-block: 2rem;
-    }
-  }
-}
+
 slide img {
   display: block;
   width: 100%;

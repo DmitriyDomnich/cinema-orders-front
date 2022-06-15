@@ -1,0 +1,11 @@
+<input
+  #search
+  (typeaheadOnSelect)="router.navigate(['/s', $event.item.id])"
+  [(ngModel)]="term"
+  type="text"
+  typeaheadOptionField="name"
+  [typeaheadAsync]="true"
+  [typeahead]="searchResults$"
+  placeholder="Пошук сеансів"
+  class="d-inline-block form-control"
+/>

@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { AdminGuard } from "./admin/admin.guard";
 import { HomeComponent } from "./home/home.component";
 import { SessionsResolver } from "./home/sessions.resolver";
 
@@ -33,12 +34,18 @@ const routes: Routes = [
     loadChildren: () =>
       import("./session/session.module").then((m) => m.SessionModule),
   },
+  {
+    path: "admin",
+    canActivate: [AdminGuard],
+    loadChildren: () =>
+      import("./admin/admin.module").then((m) => m.AdminModule),
+  },
 ];
 
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
-      scrollPositionRestoration: "top",
+      scrollPositionRestoration: "enabled",
     }),
   ],
   exports: [RouterModule],

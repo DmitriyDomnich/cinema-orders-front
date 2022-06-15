@@ -1,8 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { finalize, first, map, Observable, tap } from "rxjs";
+import { first, map, Observable } from "rxjs";
 import { ISession } from "../core/models/session-model";
-import { SessionsService } from "../core/sessions.service";
 
 @Component({
   selector: "home",
@@ -12,24 +11,20 @@ import { SessionsService } from "../core/sessions.service";
 export class HomeComponent implements OnInit {
   sessions$: Observable<ISession[]>;
   carouselSessions$: Observable<ISession[]>;
-  sessionsCount$: Observable<number>;
+  sessionsCount: number;
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private sessionsService: SessionsService
-  ) {}
+  constructor(private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.sessionsCount$ = this.sessionsService
-      .getSessionsCount()
-      .pipe(tap(console.log));
-
     this.carouselSessions$ = this.activatedRoute.data.pipe(
       first(),
-      map(({ sessions }) => sessions)
+      map(({ sessions }) => sessions.sessions)
     );
     this.sessions$ = this.activatedRoute.data.pipe(
-      map(({ sessions }) => sessions)
+      map(({ sessions }) => {
+        setTimeout(() => (this.sessionsCount = sessions.length));
+        return sessions.sessions;
+      })
     );
   }
 }

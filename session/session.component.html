@@ -44,12 +44,69 @@
     </div>
   </div>
   <div class="row my-3">
-    <div class="col-10 col-md-4 mx-auto mx-md-0">
-      {{ room | json }}
+    <div class="col-10 col-lg-8 my-3 my-lg-0 mx-auto mx-lg-0">
+      <div
+        class="fs-4 d-flex justify-content-around x-2 pt-1 border-top border-2 border-info"
+      >
+        <span>
+          <i class="bi d-block d-lg-inline bi-calendar-check text-primary"></i>
+          <div class="d-block d-lg-inline">
+            <span class="ms-0 d-block d-lg-inline ms-lg-2"
+              >{{ session.date | date: "dd MMMM" }},
+            </span>
+            <span>{{ session.date | date: "EEEE" }}</span>
+          </div>
+        </span>
+        <div class="vr"></div>
+        <span>
+          <i class="bi d-block d-lg-inline bi-clock text-primary"></i>
+          <div class="d-block d-lg-inline">
+            <span class="ms-0 ms-lg-2 p-1">{{
+              session.date | date: "HH:mm"
+            }}</span>
+            -
+            <span class="p-1">{{
+              session.date | time: session.movie.duration | date: "HH:mm"
+            }}</span>
+          </div>
+        </span>
+        <div class="vr"></div>
+        <span>
+          <i class="bi d-block d-lg-inline bi-display text-primary"></i>
+          <plate
+            *ngFor="let format of room?.format?.split(',')"
+            class="my-lg-0"
+          >
+            {{ format }}
+          </plate>
+        </span>
+      </div>
+      <session-booking
+        #booking
+        [cachedSeats]="(cachedSeats$ | async)!"
+        (onBookingSuccess)="
+          booking.elRef.nativeElement.remove();
+          viewContainerRef.createEmbeddedView(alert);
+          hall.disableClicks = true
+        "
+        (onCachingCalled)="addSeatsToCache($event)"
+      ></session-booking>
+      <ng-template #alert>
+        <alert type="success">
+          Бронювання було успішне! Статус замовлення ви можете переглянути у
+          <a
+            routerLink="/bucket"
+            class="alert-link"
+            style="text-decoration: none"
+            >кошику.</a
+          >
+        </alert>
+      </ng-template>
     </div>
     <hall
+      #hall
       [seats]="seats$ | async"
-      class="col-12 col-md-8 rounded-2 border-1 mx-auto"
+      class="col-12 col-lg-4 rounded-2 pt-2 border-1 mx-auto"
     >
     </hall>
   </div>

@@ -1,1 +1,39 @@
-<p>bucket works!</p>
+<div class="d-flex w-100 flex-column p-2">
+  <h2 class="display-2">Ваші бронювання</h2>
+  <seat-card
+    [tooltip]="
+      card.isAvailable
+        ? 'Бронювання підтверджене!'
+        : 'Ваше бронювання ще не підтвердили.'
+    "
+    [showCloseBtn]="false"
+    [seat]="card | seatFromBooking"
+    *ngFor="let card of tickets$ | async"
+  >
+    <movie-info>
+      <span class="fw-bold"> {{ card.mName }} </span>
+      <span [age]="card.ageRestriction">{{ card.ageRestriction }}+</span>
+    </movie-info>
+    <session-info>
+      <span> {{ card.rName }} зал </span>
+      <plate
+        class="bg-primary text-light"
+        [class.bg-light]="false"
+        *ngFor="let format of card.format.split(',')"
+      >
+        {{ format }}
+      </plate>
+      <span class="date" style="color: #db2bdc">
+        <span class="ms-0 ms-lg-2">{{ card.date | date: "dd MMMM" }}, </span>
+        <span>{{ card.date | date: "EEEE" }}</span>
+        <span class="ms-0 ms-lg-2">{{ card.date | date: "HH:mm" }}</span>
+      </span>
+    </session-info>
+    <card-status class="text-danger fs-3 ms-2">
+      <i *ngIf="card.isAvailable; else no" class="bi bi-check-lg"></i>
+      <ng-template #no>
+        <i class="bi bi-x-lg"></i>
+      </ng-template>
+    </card-status>
+  </seat-card>
+</div>

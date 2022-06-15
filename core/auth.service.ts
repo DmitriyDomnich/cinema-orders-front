@@ -1,55 +1,87 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, of, shareReplay, tap } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import {
+  BehaviorSubject,
+  catchError,
+  finalize,
+  first,
+  shareReplay,
+  tap,
+} from "rxjs";
+import { environment } from "src/environments/environment";
 
-// export type AuthState = "logged in" | "none";
+export type Role = "admin" | "client" | "none";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AuthService {
-
-  private authState = new BehaviorSubject<boolean>(false);
-  authState$ = this.authState.asObservable().pipe(
-    shareReplay()
-  );
+  private authState = new BehaviorSubject<Role>("none");
+  authState$ = this.authState.asObservable();
 
   constructor(private http: HttpClient) {
-    if (localStorage.getItem('token')) {
-      this.authState.next(true);
+    const token = localStorage.getItem("token");
+    if (token) {
+      this.checkUser(token).subscribe({
+        next: (isAdmin) => {
+          if (isAdmin) {
+            this.authState.next("admin");
+          } else {
+            this.authState.next("client");
+          }
+        },
+      });
     }
   }
 
   login(email: string, password: string) {
-    return this.http.post<string>(`${environment.api_url}/login`, {
-      email, password
-    }).pipe(
-      tap(token => {
-        localStorage.setItem('token', token)
-        this.authState.next(true);
-      }),
-      catchError(err => {
-        throw new Error(err);
-      })
-    );
+    return this.http
+      .post<{ token: string; isAdmin: boolean }>(
+        `${environment.apiUrl}/login`,
+        {
+          email,
+          password,
+        }
+      )
+      .pipe(
+        tap(({ token, isAdmin }) => {
+          localStorage.setItem("token", token);
+          if (isAdmin) {
+            this.authState.next("admin");
+          } else {
+            this.authState.next("client");
+          }
+        }),
+        catchError((err) => {
+          throw new Error(err);
+        })
+      );
   }
   register(email: string, password: string) {
-    console.log('called');
-    return this.http.post<string>(`${environment.api_url}/register`, {
-      email, password
-    }).pipe(
-      tap(token => {
-        localStorage.setItem('token', token)
-        this.authState.next(true);
-      }),
-      catchError(err => {
-        throw new Error(err);
+    return this.http
+      .post<string>(`${environment.apiUrl}/register`, {
+        email,
+        password,
       })
-    )
+      .pipe(
+        tap((token) => {
+          localStorage.setItem("token", token);
+          this.authState.next(`client`);
+        }),
+        catchError((err) => {
+          throw new Error(err);
+        })
+      );
   }
   logout() {
-    this.authState.next(false);
-    localStorage.removeItem('token');
+    this.authState.next(`none`);
+    localStorage.removeItem("token");
+  }
+  private checkUser(token: string) {
+    return this.http.get<boolean>(`${environment.apiUrl}/check-role`, {
+      headers: {
+        Authorization: token,
+      },
+    });
   }
 }

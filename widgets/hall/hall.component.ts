@@ -17,24 +17,43 @@ import { SeatsDirective } from "./seats.directive";
 export class HallComponent implements OnInit {
   @Input() seats: ISeat[] | null;
   @ViewChild(SeatsDirective, { static: true }) seatDirective: SeatsDirective;
+  disableClicks = false;
 
   gridCount: [number, number];
 
   constructor() {}
 
-  @HostBinding("style") get gridTemplateColumns() {
+  @HostBinding("style") get style() {
     const [rowCount, columnCount] = this.gridCount;
     return {
       "grid-template-columns": `repeat(${columnCount}, 20px)`,
       "grid-template-rows": `repeat(${rowCount}, 30px)`,
+      "pointer-events": this.disableClicks ? "none" : "initial",
     };
   }
 
   ngOnInit(): void {
     console.log(this.seats);
-    const [rowCount, columnCount] =
-      this.seats![this.seats!.length - 1].seat.split(":").map(Number);
+    const [rowCount, columnCount] = this.getMaxRowAndColumnIndeces();
     this.gridCount = [rowCount, columnCount];
-    new SeatsFactory(this.seatDirective.viewContainerRef, this.seats!).create();
+    new SeatsFactory(this.seatDirective.viewContainerRef, this.seats!, [
+      rowCount,
+      columnCount,
+    ]).create();
+  }
+  private getMaxRowAndColumnIndeces(): [number, number] {
+    return this.seats!.reduce(
+      ([accRowCount, accColumnCount], { seat }) => {
+        const [currRowCount, currColumnCount] = seat.split(":").map(Number);
+        if (currRowCount > accRowCount) {
+          accRowCount = currRowCount;
+        }
+        if (currColumnCount > accColumnCount) {
+          accColumnCount = currColumnCount;
+        }
+        return [accRowCount, accColumnCount];
+      },
+      [0, 0]
+    );
   }
 }

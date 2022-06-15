@@ -1,45 +1,52 @@
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-  <div
-    [routerLink]="['s', session.id]"
-    class="col"
-    *ngFor="let session of sessions; let i = index"
-  >
+<ng-container *ngIf="sessionCount; else empty">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     <div
-      [attr.id]="i === 0 ? 'p' : undefined"
-      itemCard
-      class="card border-dark h-100"
+      [routerLink]="['s', session.id]"
+      class="col"
+      *ngFor="let session of sessions; let i = index"
     >
-      <img [src]="session.movie.coverUrl" class="card-img-top" alt="..." />
-      <div class="card-body">
-        <h3 class="card-title">{{ session.movie.name }}</h3>
-        <p class="card-text">Genres: {{ session.movie.genres | join: ", " }}</p>
-        <p class="card-text">
-          Director{{ session.movie.directors!.length > 1 ? "s" : "" }}:
-          {{ session.movie.directors! | join: ", " }}
-        </p>
-        <p class="card-text">Duration: {{ session.movie.duration }} min</p>
-        <p class="card-text">Country: {{ session.movie.country }}</p>
-      </div>
-      <div class="card-footer">
-        <span class="text-underline text-primary">
-          Date: {{ session.date | date: "short" }}
-        </span>
-        ·
-        <span [age]="session.movie.ageRestriction">
-          {{ session.movie.ageRestriction }}+
-        </span>
+      <div
+        [attr.id]="i === 0 ? 'p' : undefined"
+        itemCard
+        class="card border-dark h-100"
+      >
+        <img [src]="session.movie.coverUrl" class="card-img-top" alt="..." />
+        <div class="card-body">
+          <h3 class="card-title">{{ session.movie.name }}</h3>
+          <p class="card-text">
+            Жанри: {{ session.movie.genres | join: ", " }}
+          </p>
+          <p class="card-text">
+            Режисер{{ session.movie.directors!.length > 1 ? "и" : "" }}:
+            {{ session.movie.directors! | join: ", " }}
+          </p>
+          <p class="card-text">
+            Тривалість: {{ session.movie.duration }} хвилин
+          </p>
+          <p class="card-text">Країна: {{ session.movie.country }}</p>
+        </div>
+        <div class="card-footer">
+          <span class="text-underline text-primary">
+            Дата проведення: {{ session.date | date: "short" }}
+          </span>
+          ·
+          <span [age]="session.movie.ageRestriction">
+            {{ session.movie.ageRestriction }}+
+          </span>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<pagination
-  class="my-4 justify-content-center"
-  previousText="&lsaquo;"
-  nextText="&rsaquo;"
-  [maxSize]="3"
-  (pageChanged)="
-    router.navigate([''], { queryParams: { offset: $event.page } })
-  "
-  [itemsPerPage]="2"
-  [totalItems]="sessionCount || 0"
-></pagination>
+  <pagination
+    class="my-4 justify-content-center"
+    previousText="&lsaquo;"
+    nextText="&rsaquo;"
+    [maxSize]="3"
+    (pageChanged)="navigate($event)"
+    [itemsPerPage]="6"
+    [totalItems]="sessionCount || 0"
+  ></pagination>
+</ng-container>
+<ng-template #empty>
+  <h1 class="display-2">0 сеансів</h1>
+</ng-template>

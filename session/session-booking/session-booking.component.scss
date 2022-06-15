@@ -1,0 +1,10 @@
+#cards-container {
+  seat-card:first-child {
+    margin-top: 0 !important;
+  }
+}
+@media screen and (min-width: 992px) {
+  #buy {
+    width: 60% !important;
+  }
+}

@@ -6,10 +6,7 @@
 >
   <slide
     [routerLink]="['/s', session.id]"
-    *ngFor="
-      let session of carouselSessions$ | async | slice: 0:5;
-      let i = index
-    "
+    *ngFor="let session of carouselSessions$ | async; let i = index"
   >
     <img [src]="session.movie.coverUrl" [alt]="i" />
     <div class="carousel-caption bg-dark">
@@ -25,7 +22,12 @@
     </div>
   </slide>
 </carousel>
-<sessions-view
-  [sessionCount]="sessionsCount$ | async"
-  [sessions]="sessions$ | async"
-></sessions-view>
+<ng-container *ngIf="sessions$ | async as sessions">
+  <sessions-filter
+    class="mx-auto d-block col-10 rounded-bottom mb-3 col-lg-8 p-2 border border-top-0 border border-dark"
+  ></sessions-filter>
+  <sessions-view
+    [sessionCount]="sessionsCount"
+    [sessions]="sessions"
+  ></sessions-view>
+</ng-container>
