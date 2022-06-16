@@ -1,0 +1,27 @@
+<ng-container *ngIf="data$ | async as data; else loading">
+  <div class="container">
+    <div class="row">
+      <hall [disableClicks]="true" [seats]="data[0]"></hall>
+      <div class="col grid" *ngIf="data[1].length; else clear">
+        <order
+          (onApprove)="approveBooking($event)"
+          (mouseenter)="getSeatEl(order).classList.add('bg-secondary')"
+          (mouseleave)="getSeatEl(order).classList.remove('bg-secondary')"
+          class="rounded-2 p-1 d-flex align-items-center justify-content-between border border-dark"
+          *ngFor="let order of data[1]; trackBy: trackBy"
+          [order]="order"
+        ></order>
+      </div>
+      <ng-template #clear>
+        <div class="col col d-flex align-items-center justify-content-center">
+          <h4 class="display-4">Список замовлень пустий</h4>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</ng-container>
+<ng-template #loading>
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</ng-template>

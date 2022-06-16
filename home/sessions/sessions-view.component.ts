@@ -26,15 +26,19 @@ export class SessionsViewComponent implements OnChanges {
   constructor(public router: Router, private route: ActivatedRoute) {}
 
   navigate(ev: PageChangedEvent) {
+    console.log("sesh view");
+
     this.route.queryParamMap
       .pipe(
         first(),
         tap((params) => {
           const genres = params.get("genres");
+          const date = params.get("date");
           this.router.navigate([""], {
             queryParams: {
               offset: ev.page === 1 ? 0 : (ev.page - 1) * ev.itemsPerPage,
               genres,
+              date,
             },
           });
         })

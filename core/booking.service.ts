@@ -38,7 +38,7 @@ export class BookingService {
     });
   }
 
-  getSeatsWithRoomById(id: string): Observable<ISeat[]> {
+  getSeatElsWithRoomById(id: string): Observable<ISeat[]> {
     return this.http
       .get<any>(`${environment.apiUrl}/session-seats`, {
         params: {

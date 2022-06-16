@@ -17,7 +17,7 @@ export class SeatsFactory {
 
     for (let i = 1; i <= rowCount; i++) {
       for (let j = 1; j <= columnCount; j++) {
-        const seat = this.getSeatConfigurationByIndex(currSeatIndex);
+        const seat = this.getSeatElConfigurationByIndex(currSeatIndex);
 
         if (seat && i === seat[0] && j === seat[1]) {
           if (this.seats[currSeatIndex++].isAvailable) {
@@ -34,7 +34,9 @@ export class SeatsFactory {
     }
   }
 
-  private getSeatConfigurationByIndex(index: number): [number, number] | null {
+  private getSeatElConfigurationByIndex(
+    index: number
+  ): [number, number] | null {
     try {
       const [row, column] = this.seats[index]?.seat.split(":").map(Number);
       return [row, column];

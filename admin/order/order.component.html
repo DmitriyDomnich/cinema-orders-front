@@ -1,0 +1,14 @@
+<div>
+  <span> {{ order.seat }} - </span>
+  <span>
+    {{ order.email }}
+  </span>
+</div>
+<div class="d-flex">
+  <button
+    (click)="elRef.nativeElement.remove(); onApprove.emit(order)"
+    class="btn btn-success"
+  >
+    <i class="bi bi-check-lg"></i>
+  </button>
+</div>

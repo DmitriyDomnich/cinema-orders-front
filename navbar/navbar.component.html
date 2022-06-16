@@ -3,7 +3,12 @@
 
   <div class="navbar-nav" *ngIf="(auth$ | async) === 'client'">
     <a class="nav-link" routerLink="/bucket"
-      >Orders <i class="bi bi-bucket"></i
+      >Бронювання <i class="bi bi-bucket"></i
+    ></a>
+  </div>
+  <div class="navbar-nav" *ngIf="(auth$ | async) === 'admin'">
+    <a class="nav-link" routerLink="/admin"
+      >Сеанси <i class="bi bi-file-earmark-lock"></i
     ></a>
   </div>
 
@@ -21,12 +26,12 @@
     <search class="me-2"></search>
     <ng-container *ngIf="(auth$ | async) !== 'none'; else loggedOff">
       <button (click)="auth.logout()" class="btn btn-outline-danger">
-        Log out
+        Вийти
       </button>
     </ng-container>
     <ng-template #loggedOff>
       <button class="btn btn-outline-secondary" routerLink="/login">
-        Login
+        Увійти
       </button>
     </ng-template>
   </div>

@@ -18,38 +18,37 @@
 <div class="form-check form-check-inline">
   <input
     (change)="selectedDate = null"
-    [checked]="!(week.checked || month.checked)"
+    [checked]="selectedDate === null"
     class="form-check-input"
     type="radio"
     name="date"
     id="allTime"
-    value="allTime"
   />
   <label class="form-check-label" for="allTime"> Найближчі </label>
 </div>
 <div class="form-check form-check-inline">
   <input
-    #week
     (change)="selectedDate = countUntilNextWeekTime()"
-    [checked]="selectedDate === countUntilNextWeekTime()"
+    [checked]="
+      selectedDate && selectedDate >= countUntilNextWeekTime() - 100000
+    "
     class="form-check-input"
     type="radio"
     name="date"
     id="week"
-    value="allTime"
   />
   <label class="form-check-label" for="week"> Цього тижня </label>
 </div>
 <div class="form-check form-check-inline">
   <input
-    #month
     (change)="selectedDate = countUntilNextMonthTime()"
-    [checked]="selectedDate === countUntilNextMonthTime()"
+    [checked]="
+      selectedDate && selectedDate >= countUntilNextMonthTime() - 100000
+    "
     class="form-check-input"
     type="radio"
     name="date"
     id="month"
-    value="allTime"
   />
   <label class="form-check-label" for="month"> Цього місяця </label>
 </div>

@@ -6,7 +6,6 @@ import {
   OnInit,
   Output,
   ViewChild,
-  ViewContainerRef,
 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { PopoverDirective } from "ngx-bootstrap/popover";
@@ -54,7 +53,7 @@ export class SessionBookingComponent implements OnInit {
       .pipe(
         first(),
         switchMap((isLogged) => {
-          if (isLogged) {
+          if (isLogged === "client") {
             return this.seatsBooked$.pipe(first());
           }
           this.popover.show();

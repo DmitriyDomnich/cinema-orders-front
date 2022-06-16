@@ -13,11 +13,12 @@ import { SeatsDirective } from "./seats.directive";
   selector: "hall",
   templateUrl: "./hall.component.html",
   styleUrls: ["./hall.component.scss"],
+  exportAs: "hall",
 })
 export class HallComponent implements OnInit {
   @Input() seats: ISeat[] | null;
+  @Input() disableClicks = false;
   @ViewChild(SeatsDirective, { static: true }) seatDirective: SeatsDirective;
-  disableClicks = false;
 
   gridCount: [number, number];
 
@@ -41,7 +42,7 @@ export class HallComponent implements OnInit {
       columnCount,
     ]).create();
   }
-  private getMaxRowAndColumnIndeces(): [number, number] {
+  getMaxRowAndColumnIndeces(): [number, number] {
     return this.seats!.reduce(
       ([accRowCount, accColumnCount], { seat }) => {
         const [currRowCount, currColumnCount] = seat.split(":").map(Number);

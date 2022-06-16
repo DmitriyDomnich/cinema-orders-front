@@ -36,7 +36,7 @@ export class SessionsResolver
 
     return this.sessionsService
       .getSessions(
-        route.queryParamMap.get("offset") || "0",
+        route.queryParamMap.get("offset") || undefined,
         route.queryParamMap.get("genres") || undefined,
         +route.queryParamMap.get("date")! || undefined
       )
@@ -54,13 +54,12 @@ export class SessionsResolver
             first()
           );
         }),
-        // take(3),
         toArray(),
         map((sessions) => ({
           sessions,
           length: lengthCount,
-        })),
-        tap((stmh) => console.log(stmh))
+        }))
+        // tap((stmh) => console.log(stmh))
       );
   }
 }

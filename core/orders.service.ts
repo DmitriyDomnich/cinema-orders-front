@@ -3,12 +3,30 @@ import { Injectable } from "@angular/core";
 import { map, Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import { IBooking } from "./models/booking-model";
+import { IOrder } from "./models/order-model";
 
 @Injectable({
   providedIn: "root",
 })
 export class OrdersService {
   constructor(private http: HttpClient) {}
+
+  createOrder(id: string) {
+    // return this.http.post(
+    //   `${environment.apiUrl}/`
+    // )
+  }
+
+  getOrdersBySessionId(id: string) {
+    return this.http.get<IOrder[]>(`${environment.apiUrl}/session-bookings`, {
+      headers: {
+        Authorization: localStorage.getItem("token")!,
+      },
+      params: {
+        id,
+      },
+    });
+  }
 
   getSessions(): Observable<IBooking[]> {
     return this.http
@@ -34,6 +52,4 @@ export class OrdersService {
         )
       );
   }
-
-  getBookingsBySessionId(sessionId: string) {}
 }

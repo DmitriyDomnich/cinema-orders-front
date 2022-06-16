@@ -1,7 +1,13 @@
 import { HttpParams } from "@angular/common/http";
-import { Component, OnInit } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { map, Observable } from "rxjs";
+import { fromEvent, map, Observable, pipe, tap } from "rxjs";
 import { IGenre } from "src/app/core/models/genre-model";
 import { SessionsService } from "src/app/core/sessions.service";
 
@@ -37,11 +43,13 @@ export class SessionsFilterComponent implements OnInit {
       params.genres = this.selectedGenres.join();
     }
     if (Object.keys(params).length) {
-      console.log(params);
+      // console.log(params);
 
-      this.router.navigate(["/"], {
-        queryParams: params,
-      });
+      this.router
+        .navigate(["/"], {
+          queryParams: params,
+        })
+        .then((val) => console.log(val, "navigated"));
     } else {
       this.router.navigate(["/"]);
     }
@@ -61,7 +69,7 @@ export class SessionsFilterComponent implements OnInit {
 
     const date = now.setMonth(now.getMonth() + 1);
     const val = new Date(new Date(date).setDate(1)).getTime();
-    console.log(val);
+    // console.log(val);
 
     return val;
   }

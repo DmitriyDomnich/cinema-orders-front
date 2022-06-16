@@ -19,7 +19,7 @@ export class SeatsResolver implements Resolve<ISeat[]> {
     state: RouterStateSnapshot
   ): Observable<ISeat[]> {
     return <any>(
-      this.bookingService.getSeatsWithRoomById(route.paramMap.get("id")!)
+      this.bookingService.getSeatElsWithRoomById(route.paramMap.get("id")!)
     );
   }
 }

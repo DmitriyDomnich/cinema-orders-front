@@ -3,7 +3,6 @@ import {
   ElementRef,
   HostBinding,
   HostListener,
-  Inject,
   OnDestroy,
   OnInit,
 } from "@angular/core";
@@ -27,8 +26,7 @@ export class FreeSeatComponent
 
   constructor(
     private elRef: ElementRef<HTMLElement>,
-    private bookingService: BookingService,
-    @Inject("BookedCount") private bookedCount: { value: number }
+    private bookingService: BookingService
   ) {
     super();
   }

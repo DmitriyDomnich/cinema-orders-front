@@ -71,19 +71,12 @@ export class SessionsService {
     return this.http.get<IGenre[]>(`${environment.apiUrl}/genres`);
   }
 
-  // getSessionsCount(): Observable<number> {
-  //   return this.http
-  //     .get<{ length: number }[]>(`${environment.apiUrl}/sessions-count`)
-  //     .pipe(map(({ length }) => length));
-  // }
-
   getSessions(
     indexOffset = "0",
     genreIds?: string,
-    date?: number
+    date?: number,
+    limit = true
   ): Observable<{ length: number; sessions: ISession[] }> {
-    // console.log(date, genreIds);
-
     let params = new HttpParams().append("offset", +indexOffset);
     if (genreIds) {
       params = params.append("genres", genreIds);
@@ -91,7 +84,9 @@ export class SessionsService {
     if (date) {
       params = params.append("date", date);
     }
-    // console.log(params);
+    if (!limit) {
+      params = params.append("noLimit", true);
+    }
 
     return this.http
       .get<SessionsResponse>(`${environment.apiUrl}/current-sessions`, {
