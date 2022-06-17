@@ -1,18 +1,33 @@
 <div class="container">
   <h2 class="display-2">
-    Сеанси <button class="btn btn-outline-success ms-2">Додати</button>
+    Сеанси
+    <button routerLink="../c" class="btn btn-outline-success ms-2">
+      Додати
+    </button>
   </h2>
   <accordion>
     <accordion-group
       #group
-      *ngFor="let session of sessions$ | async; trackBy: trackBy"
+      *ngFor="let session of sessions$ | async; trackBy: trackBy; let i = index"
     >
       <div class="d-flex align-items-center" accordion-heading>
         <span class="fw-bold me-2">{{ session.movie.name }}</span>
         <span> {{ session.date | date: "dd, LLLL - HH:mm" }} </span>
         <div class="ms-auto"></div>
-        <button class="btn btn-outline-danger me-1">Видалити</button>
-        <button class="btn btn-outline-warning">Змінити</button>
+        <button
+          (click)="$event.stopPropagation(); delete(i, session.id)"
+          class="btn btn-outline-danger me-1"
+        >
+          Видалити
+        </button>
+        <button
+          (click)="$event.stopPropagation()"
+          [routerLink]="['u', session.id]"
+          [relativeTo]="route.parent"
+          class="btn btn-outline-warning"
+        >
+          Змінити
+        </button>
       </div>
       <session-booking
         [sessionId]="session.id"

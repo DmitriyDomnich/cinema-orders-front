@@ -12,9 +12,17 @@ export class OrdersService {
   constructor(private http: HttpClient) {}
 
   createOrder(id: string) {
-    // return this.http.post(
-    //   `${environment.apiUrl}/`
-    // )
+    return this.http.put(
+      `${environment.apiUrl}/orders`,
+      {
+        id,
+      },
+      {
+        headers: {
+          Authorization: localStorage.getItem("token")!,
+        },
+      }
+    );
   }
 
   getOrdersBySessionId(id: string) {

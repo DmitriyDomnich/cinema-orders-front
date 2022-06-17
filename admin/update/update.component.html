@@ -1,0 +1,44 @@
+<ng-container *ngIf="session$ | async as session">
+  <h1 class="fw-bold ms-2">Номер сеансу: {{ id }}</h1>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <input
+          type="text"
+          spellcheck="false"
+          class="form-control"
+          [(ngModel)]="date"
+          [bsConfig]="{
+            dateInputFormat: 'MMMM Do YYYY, HH:mm',
+            withTimepicker: true,
+            containerClass: 'theme-dark-blue'
+          }"
+          bsDatepicker
+        />
+      </div>
+      <div class="col-12 my-2 my-md-0 col-md-6">
+        <input
+          type="text"
+          (typeaheadOnSelect)="movie = $event.item"
+          spellcheck="false"
+          typeaheadOptionField="name"
+          [(ngModel)]="term"
+          [typeahead]="movies$"
+          [typeaheadAsync]="true"
+          class="form-control"
+          placeholder="Пошук фільму"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="m-3" *ngIf="!isComplete; else complete">
+    <button (click)="update()" class="btn btn-success me-2">Підтвердити</button>
+    <button (click)="location.back()" class="btn btn-warning">Відміна</button>
+  </div>
+  <ng-template #complete>
+    <alert class="m-3" type="success"> Сеанс успішно оновлено! </alert>
+    <button (click)="location.back()" class="btn mx-auto btn-success d-block">
+      До сеансів
+    </button>
+  </ng-template>
+</ng-container>

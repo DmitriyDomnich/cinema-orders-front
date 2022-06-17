@@ -3,7 +3,7 @@
   <seat-card
     [tooltip]="
       card.isAvailable
-        ? 'Бронювання підтверджене!'
+        ? 'Бронювання підтверджене! Придбайте квиток за QR-кодом'
         : 'Ваше бронювання ще не підтвердили.'
     "
     [showCloseBtn]="false"
@@ -29,10 +29,16 @@
         <span class="ms-0 ms-lg-2">{{ card.date | date: "HH:mm" }}</span>
       </span>
     </session-info>
-    <card-status class="text-danger fs-3 ms-2">
-      <i *ngIf="card.isAvailable; else no" class="bi bi-check-lg"></i>
+    <card-status class="fs-3 ms-2">
+      <qrcode
+        *ngIf="card.isAvailable; else no"
+        [qrdata]="card | qrcode"
+        [colorDark]="'#ddc600'"
+        [colorLight]="'#1559bf'"
+        errorCorrectionLevel="M"
+      ></qrcode>
       <ng-template #no>
-        <i class="bi bi-x-lg"></i>
+        <i class="text-danger bi bi-x-lg"></i>
       </ng-template>
     </card-status>
   </seat-card>

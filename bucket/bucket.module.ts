@@ -7,9 +7,11 @@ import { SeatFromBookingPipe } from "./seat-from-booking.pipe";
 import { SharedModule } from "../shared/shared.module";
 import { PlateModule } from "../widgets/plate/plate.module";
 import { TooltipModule } from "ngx-bootstrap/tooltip";
+import { QRCodeModule } from "angularx-qrcode";
+import { QrcodePipe } from './qrcode.pipe';
 
 @NgModule({
-  declarations: [BucketComponent, SeatFromBookingPipe],
+  declarations: [BucketComponent, SeatFromBookingPipe, QrcodePipe],
   imports: [
     CommonModule,
     BucketRoutingModule,
@@ -17,6 +19,7 @@ import { TooltipModule } from "ngx-bootstrap/tooltip";
     SharedModule,
     PlateModule,
     TooltipModule,
+    QRCodeModule,
   ],
 })
 export class BucketModule {}

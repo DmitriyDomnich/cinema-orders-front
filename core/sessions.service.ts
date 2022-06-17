@@ -1,8 +1,9 @@
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpContext, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { map, Observable, tap } from "rxjs";
+import { map, Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import { IGenre } from "./models/genre-model";
+import { IMovie } from "./models/movie-model";
 import { ISession } from "./models/session-model";
 import { IStaff } from "./models/staff-model";
 
@@ -28,6 +29,43 @@ interface CurrentSession {
 })
 export class SessionsService {
   constructor(private http: HttpClient) {}
+
+  createSession(mId: string, date: Date) {
+    return this.http.post<void>(
+      `${environment.apiUrl}/session`,
+      {
+        mId,
+        date,
+      },
+      {
+        headers: {
+          Authorization: localStorage.getItem("token")!,
+        },
+      }
+    );
+  }
+
+  updateSession(id: string, body: { date?: Date; mId?: string }) {
+    return this.http.put<void>(`${environment.apiUrl}/session`, body, {
+      params: {
+        id,
+      },
+      headers: {
+        Authorization: localStorage.getItem("token")!,
+      },
+    });
+  }
+
+  deleteSession(id: string) {
+    return this.http.delete(`${environment.apiUrl}/session`, {
+      headers: {
+        Authorization: localStorage.getItem("token")!,
+      },
+      body: {
+        id,
+      },
+    });
+  }
 
   getSessionsByTerm(term: string): Observable<{ id: string; name: string }[]> {
     return this.http.get<{ id: string; name: string }[]>(

@@ -38,7 +38,7 @@ export class SessionBookingComponent implements OnInit {
     seatEl.classList.remove("bg-secondary");
     seatEl.classList.add("bg-danger");
     seatEl.innerHTML = '<i class="bi bi-lock-fill"></i>';
-    // this.ordersService.createOrder(order.bId); //todo
+    this.ordersService.createOrder(order.bId).subscribe();
   }
 
   getSeatEl(order: IOrder): HTMLElement {
